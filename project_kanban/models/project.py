@@ -18,5 +18,13 @@ class Project(models.Model):
     recent_date = fields.Datetime(
         compute="_compute_get_recent_date",
         string="Recent date",
-        help="This will be auto set"
+        help="This will be auto set",
     )
+
+class ProjectTask(models.Model):
+    _inherit = 'project.task'
+
+    def write(self,vals):
+        res = super(ProjectTask, self).write(vals)
+        self.project_id.write_date = self.write_date
+        return res
